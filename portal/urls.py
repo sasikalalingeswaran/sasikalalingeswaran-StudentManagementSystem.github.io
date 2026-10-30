@@ -1,0 +1,27 @@
+from django.urls import path
+from . import views
+urlpatterns = [
+ path("",views.home,name="home"),
+ path("faculty/signup/",views.faculty_signup,name="faculty_signup"),
+ path("faculty/login/",views.faculty_login,name="faculty_login"),
+ path("faculty/dashboard/",views.faculty_dashboard,name="faculty_dashboard"),
+ path("faculty/students/",views.student_list,name="student_list"),
+ path("faculty/students/add/",views.student_add,name="student_add"),
+ path("faculty/students/<int:pk>/edit/",views.student_edit,name="student_edit"),
+ path("faculty/students/<int:pk>/delete/",views.student_delete,name="student_delete"),
+ path("faculty/assignments/",views.assignment_list,name="assignment_list"),
+ path("faculty/assignments/add/",views.assignment_add,name="assignment_add"),
+ path("faculty/assignments/<int:pk>/edit/",views.assignment_edit,name="assignment_edit"),
+ path("faculty/assignments/<int:pk>/delete/",views.assignment_delete,name="assignment_delete"),
+ path("faculty/marks/",views.marks_list,name="marks_list"),
+ path("faculty/marks/<int:pk>/delete/",views.mark_delete,name="mark_delete"),
+ path("faculty/queries/",views.faculty_queries,name="faculty_queries"),
+ path("faculty/queries/<int:pk>/respond/",views.query_respond,name="query_respond"),
+ path("student/login/",views.student_login,name="student_login"),
+ path("student/dashboard/",views.student_dashboard,name="student_dashboard"),
+ path("student/profile/",views.student_profile,name="student_profile"),
+ path("student/marks/",views.student_marks,name="student_marks"),
+ path("student/assignments/",views.student_assignments,name="student_assignments"),
+ path("student/queries/",views.student_queries,name="student_queries"),
+ path("logout/",views.logout,name="logout"),
+]
