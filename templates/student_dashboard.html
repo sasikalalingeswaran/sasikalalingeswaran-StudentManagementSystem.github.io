@@ -1,1 +1,140 @@
-{% extends 'portal/base.html' %}{% block content %}<div class="student-welcome"><div><div class="eyebrow">STUDENT SPACE / YOUR OVERVIEW</div><h1>Welcome back, {{ student.name }}.</h1><p>Here's your learning snapshot. Keep moving forward, one step at a time.</p></div><div class="student-avatar-large">{{ student.name|first|upper }}</div></div><div class="stats-grid"><div class="stat-card"><span class="stat-icon purple">▥</span><small>OVERALL SCORE</small><strong>{{ percentage }}%</strong><span class="stat-foot">Based on recorded marks</span></div><div class="stat-card"><span class="stat-icon blue">▤</span><small>ASSIGNMENTS</small><strong>{{ assignments|length }}</strong><span class="stat-foot">Available coursework</span></div><div class="stat-card"><span class="stat-icon orange">✉</span><small>MY QUERIES</small><strong>{{ queries|length }}</strong><span class="stat-foot">Recent conversations</span></div><div class="stat-card"><span class="stat-icon green">♙</span><small>ROLL NUMBER</small><strong class="roll-stat">{{ student.roll_number }}</strong><span class="stat-foot">{{ student.department }}</span></div></div><div class="quick-grid student-quick"><a class="quick-card" href="{% url 'student_profile' %}"><span class="quick-icon purple">♙</span><div><b>Personal details</b><small>Review your registered profile</small></div><span class="arrow">↗</span></a><a class="quick-card" href="{% url 'student_marks' %}"><span class="quick-icon green">▥</span><div><b>View scores</b><small>See your subject-wise marks</small></div><span class="arrow">↗</span></a><a class="quick-card" href="{% url 'student_assignments' %}"><span class="quick-icon blue">▤</span><div><b>Assignments</b><small>Check coursework and due dates</small></div><span class="arrow">↗</span></a><a class="quick-card" href="{% url 'student_queries' %}"><span class="quick-icon orange">✉</span><div><b>Ask faculty</b><small>Send a question or view replies</small></div><span class="arrow">↗</span></a></div><div class="two-col"><section class="panel"><div class="panel-heading"><div><h2>Latest scores</h2><p>Your recent recorded results</p></div><a href="{% url 'student_marks' %}">View all →</a></div>{% for m in records|slice:":5" %}<div class="score-row"><div><b>{{ m.subject }}</b><small>{{ m.assessment }}</small></div><div class="score-value">{{ m.score }} <small>/ {{ m.max_score }}</small></div></div>{% empty %}<p class="empty">Your faculty has not entered marks yet.</p>{% endfor %}</section><section class="panel"><div class="panel-heading"><div><h2>Upcoming assignments</h2><p>Keep an eye on deadlines</p></div><a href="{% url 'student_assignments' %}">View all →</a></div>{% for a in assignments|slice:":5" %}<div class="list-row"><span class="quick-icon purple">▤</span><div class="row-main"><b>{{ a.title }}</b><small>{{ a.subject }}</small></div><span class="date-chip">{{ a.due_date|date:"d M" }}</span></div>{% empty %}<p class="empty">No assignments available.</p>{% endfor %}</section></div>{% endblock %}
+{% extends 'portal/base.html' %}
+
+{% block content %}
+
+<div class="student-welcome">
+    <div>
+        <div class="eyebrow">STUDENT SPACE / YOUR OVERVIEW</div>
+        <h1>Welcome back, {{ student.name }}.</h1>
+        <p>Here's your learning snapshot. Keep moving forward, one step at a time.</p>
+    </div>
+
+    <div class="student-avatar-large">
+        {{ student.name|first|upper }}
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-icon purple">▥</span>
+        <small>OVERALL SCORE</small>
+        <strong>{{ percentage }}%</strong>
+        <span class="stat-foot">Based on recorded marks</span>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-icon blue">▤</span>
+        <small>ASSIGNMENTS</small>
+        <strong>{{ assignments|length }}</strong>
+        <span class="stat-foot">Available coursework</span>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-icon orange">✉</span>
+        <small>MY QUERIES</small>
+        <strong>{{ queries|length }}</strong>
+        <span class="stat-foot">Recent conversations</span>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-icon green">♙</span>
+        <small>ROLL NUMBER</small>
+        <strong class="roll-stat">{{ student.roll_number }}</strong>
+        <span class="stat-foot">{{ student.department }}</span>
+    </div>
+</div>
+
+<div class="quick-grid student-quick">
+    <a class="quick-card" href="{% url 'student_profile' %}">
+        <span class="quick-icon purple">♙</span>
+        <div>
+            <b>Personal details</b>
+            <small>Review your registered profile</small>
+        </div>
+        <span class="arrow">↗</span>
+    </a>
+
+    <a class="quick-card" href="{% url 'student_marks' %}">
+        <span class="quick-icon green">▥</span>
+        <div>
+            <b>View scores</b>
+            <small>See your subject-wise marks</small>
+        </div>
+        <span class="arrow">↗</span>
+    </a>
+
+    <a class="quick-card" href="{% url 'student_assignments' %}">
+        <span class="quick-icon blue">▤</span>
+        <div>
+            <b>Assignments</b>
+            <small>Check coursework and due dates</small>
+        </div>
+        <span class="arrow">↗</span>
+    </a>
+
+    <a class="quick-card" href="{% url 'student_queries' %}">
+        <span class="quick-icon orange">✉</span>
+        <div>
+            <b>Ask faculty</b>
+            <small>Send a question or view replies</small>
+        </div>
+        <span class="arrow">↗</span>
+    </a>
+</div>
+
+<div class="two-col">
+    <section class="panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Latest scores</h2>
+                <p>Your recent recorded results</p>
+            </div>
+            <a href="{% url 'student_marks' %}">View all →</a>
+        </div>
+
+        {% for m in records|slice:":5" %}
+            <div class="score-row">
+                <div>
+                    <b>{{ m.subject }}</b>
+                    <small>{{ m.assessment }}</small>
+                </div>
+
+                <div class="score-value">
+                    {{ m.score }}
+                    <small>/ {{ m.max_score }}</small>
+                </div>
+            </div>
+        {% empty %}
+            <p class="empty">Your faculty has not entered marks yet.</p>
+        {% endfor %}
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Upcoming assignments</h2>
+                <p>Keep an eye on deadlines</p>
+            </div>
+            <a href="{% url 'student_assignments' %}">View all →</a>
+        </div>
+
+        {% for a in assignments|slice:":5" %}
+            <div class="list-row">
+                <span class="quick-icon purple">▤</span>
+
+                <div class="row-main">
+                    <b>{{ a.title }}</b>
+                    <small>{{ a.subject }}</small>
+                </div>
+
+                <span class="date-chip">
+                    {{ a.due_date|date:"d M" }}
+                </span>
+            </div>
+        {% empty %}
+            <p class="empty">No assignments available.</p>
+        {% endfor %}
+    </section>
+</div>
+
+{% endblock %}
