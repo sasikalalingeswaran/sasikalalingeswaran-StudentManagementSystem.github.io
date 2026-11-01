@@ -1,1 +1,80 @@
-{% extends 'portal/base.html' %}{% block content %}<div class="page-heading"><div><div class="eyebrow">FACULTY / COMMUNICATION</div><h1>Student queries</h1><p>Review questions and respond directly to students.</p></div></div><div class="query-list">{% for q in queries %}<article class="panel query-card"><div class="query-card-head"><div class="table-person"><span class="person-avatar">{{ q.student.name|first|upper }}</span><span><b>{{ q.student.name }}</b><small>{{ q.student.roll_number }} · {{ q.created_at|date:"d M Y, H:i" }}</small></span></div><span class="status-tag {{ q.status }}">{{ q.get_status_display }}</span></div><div class="query-subject">{{ q.subject }}</div><p class="query-message">{{ q.message }}</p>{% if q.response %}<div class="existing-response"><b>Your response</b><p>{{ q.response }}</p></div>{% endif %}<form method="post" action="{% url 'query_respond' q.pk %}" class="stack-form">{% csrf_token %}<div class="field"><label>{% if q.response %}Update response{% else %}Write a response{% endif %}</label><textarea name="response" rows="3" required>{{ q.response }}</textarea></div><button class="btn primary">Send response →</button></form></article>{% empty %}<div class="panel empty">No student queries have been received.</div>{% endfor %}</div>{% endblock %}
+{% extends 'portal/base.html' %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">FACULTY / COMMUNICATION</div>
+        <h1>Student queries</h1>
+        <p>Review questions and respond directly to students.</p>
+    </div>
+</div>
+
+<div class="query-list">
+    {% for q in queries %}
+        <article class="panel query-card">
+            <div class="query-card-head">
+                <div class="table-person">
+                    <span class="person-avatar">
+                        {{ q.student.name|first|upper }}
+                    </span>
+
+                    <span>
+                        <b>{{ q.student.name }}</b>
+                        <small>
+                            {{ q.student.roll_number }} · {{ q.created_at|date:"d M Y, H:i" }}
+                        </small>
+                    </span>
+                </div>
+
+
+            </div>
+
+            <div class="query-subject">
+                {{ q.subject }}
+            </div>
+
+            <p class="query-message">
+                {{ q.message }}
+            </p>
+
+            {% if q.response %}
+                <div class="existing-response">
+                    <b>Your response</b>
+                    <p>{{ q.response }}</p>
+                </div>
+            {% endif %}
+
+            <form
+                method="post"
+                action="{% url 'query_respond' q.pk %}"
+                class="stack-form"
+            >
+                {% csrf_token %}
+
+                <div class="field">
+                    <label>
+                        {% if q.response %}
+                            Update response
+                        {% else %}
+                            Write a response
+                        {% endif %}
+                    </label>
+
+                    <textarea name="response" rows="3" required>{{ q.response }}</textarea>
+                </div>
+
+                <button class="btn primary">
+                    Send response →
+                </button>
+            </form>
+        </article>
+
+    {% empty %}
+        <div class="panel empty">
+            No student queries have been received.
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
