@@ -1,1 +1,68 @@
-{% extends 'portal/base.html' %}{% block content %}<div class="page-heading"><div><div class="eyebrow">FACULTY / COURSEWORK</div><h1>Assignment management</h1><p>Create and maintain coursework for students.</p></div><a class="btn primary" href="{% url 'assignment_add' %}">＋ New assignment</a></div><div class="assignment-grid">{% for a in assignments %}<article class="assignment-card"><div class="assignment-top"><span class="quick-icon purple">▤</span><span class="status-tag {% if a.due_date < today %}answered{% else %}active{% endif %}">Due {{ a.due_date|date:"d M Y" }}</span></div><h3>{{ a.title }}</h3><div class="subject-label">{{ a.subject }}</div><p>{{ a.description }}</p><div class="assignment-bottom"><small>Created by {{ a.created_by.name }}</small><div class="actions"><a class="mini-btn" href="{% url 'assignment_edit' a.pk %}">Edit</a><form method="post" action="{% url 'assignment_delete' a.pk %}" data-confirm="Delete this assignment?">{% csrf_token %}<button class="mini-btn danger">Delete</button></form></div></div></article>{% empty %}<div class="empty panel">No assignments published yet. Create your first assignment.</div>{% endfor %}</div>{% endblock %}
+{% extends 'portal/base.html' %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">FACULTY / COURSEWORK</div>
+        <h1>Assignment management</h1>
+        <p>Create and maintain coursework for students.</p>
+    </div>
+
+    <a class="btn primary" href="{% url 'assignment_add' %}">
+        ＋ New assignment
+    </a>
+</div>
+
+<div class="assignment-grid">
+    {% for a in assignments %}
+        <article class="assignment-card">
+            <div class="assignment-top">
+                <span class="quick-icon purple">▤</span>
+
+                <span class="status-tag {% if a.due_date < today %}answered{% else %}active{% endif %}">
+                    Due {{ a.due_date|date:"d M Y" }}
+                </span>
+            </div>
+
+            <h3>{{ a.title }}</h3>
+
+            <div class="subject-label">
+                {{ a.subject }}
+            </div>
+
+            <p>{{ a.description }}</p>
+
+            <div class="assignment-bottom">
+                <small>
+                    Created by {{ a.created_by.name }}
+                </small>
+
+                <div class="actions">
+                    <a class="mini-btn" href="{% url 'assignment_edit' a.pk %}">
+                        Edit
+                    </a>
+
+                    <form
+                        method="post"
+                        action="{% url 'assignment_delete' a.pk %}"
+                        data-confirm="Delete this assignment?"
+                    >
+                        {% csrf_token %}
+
+                        <button class="mini-btn danger">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </article>
+
+    {% empty %}
+        <div class="empty panel">
+            No assignments published yet. Create your first assignment.
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
