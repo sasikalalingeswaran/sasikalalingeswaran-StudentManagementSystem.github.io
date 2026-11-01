@@ -1,1 +1,43 @@
-{% extends 'portal/base.html' %}{% block content %}<div class="page-heading"><div><div class="eyebrow">STUDENT SPACE / COURSEWORK</div><h1>Assignments</h1><p>Review the coursework published by your faculty.</p></div></div><div class="assignment-grid">{% for a in assignments %}<article class="assignment-card"><div class="assignment-top"><span class="quick-icon purple">▤</span><span class="status-tag {% if a.due_date < today %}answered{% else %}active{% endif %}">Due {{ a.due_date|date:"d M Y" }}</span></div><h3>{{ a.title }}</h3><div class="subject-label">{{ a.subject }}</div><p>{{ a.description }}</p><div class="assignment-bottom"><small>Faculty: {{ a.created_by.name }}</small></div></article>{% empty %}<div class="panel empty">No assignments have been published yet.</div>{% endfor %}</div>{% endblock %}
+{% extends 'portal/base.html' %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">STUDENT SPACE / COURSEWORK</div>
+        <h1>Assignments</h1>
+        <p>Review the coursework published by your faculty.</p>
+    </div>
+</div>
+
+<div class="assignment-grid">
+    {% for a in assignments %}
+        <article class="assignment-card">
+            <div class="assignment-top">
+                <span class="quick-icon purple">▤</span>
+
+                <span class="status-tag {% if a.due_date < today %}answered{% else %}active{% endif %}">
+                    Due {{ a.due_date|date:"d M Y" }}
+                </span>
+            </div>
+
+            <h3>{{ a.title }}</h3>
+
+            <div class="subject-label">
+                {{ a.subject }}
+            </div>
+
+            <p>{{ a.description }}</p>
+
+            <div class="assignment-bottom">
+                <small>Faculty: {{ a.created_by.name }}</small>
+            </div>
+        </article>
+    {% empty %}
+        <div class="panel empty">
+            No assignments have been published yet.
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
