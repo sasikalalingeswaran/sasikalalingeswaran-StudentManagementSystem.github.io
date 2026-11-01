@@ -1,1 +1,108 @@
-document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll("form[data-confirm]").forEach(form=>form.addEventListener("submit",e=>{if(!window.confirm(form.dataset.confirm||"Are you sure?"))e.preventDefault()}));document.querySelectorAll(".message").forEach(m=>{setTimeout(()=>m.classList.add("fade"),5000)});const canvas=document.getElementById("marksChart");if(canvas){try{const labels=JSON.parse(document.getElementById("chartLabels").textContent);const values=JSON.parse(document.getElementById("chartValues").textContent);const ctx=canvas.getContext("2d");const dpr=window.devicePixelRatio||1;const width=canvas.clientWidth||520;const height=230;canvas.width=width*dpr;canvas.height=height*dpr;ctx.scale(dpr,dpr);const pad={l:35,r:12,t:16,b:48};const w=width-pad.l-pad.r;const h=height-pad.t-pad.b;ctx.font="11px Arial";ctx.strokeStyle="#e9edf4";ctx.fillStyle="#778196";for(let i=0;i<=4;i++){let y=pad.t+h*i/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(width-pad.r,y);ctx.stroke();ctx.fillText(String(Math.round(100-25*i)),3,y+4)}if(!labels.length){ctx.fillText("Add marks to see performance insights.",pad.l+8,height/2);return}const max=Math.max(100,...values);const slot=w/labels.length;values.forEach((v,i)=>{const bh=(v/max)*h;const x=pad.l+i*slot+slot*.22;const bw=Math.max(5,slot*.56);ctx.fillStyle="#2563eb";ctx.beginPath();ctx.roundRect(x,pad.t+h-bh,bw,bh,5);ctx.fill();ctx.save();ctx.translate(x+bw/2,height-pad.b+9);ctx.rotate(-.35);ctx.textAlign="right";ctx.fillStyle="#697386";ctx.fillText(labels[i].length>13?labels[i].slice(0,12)+"…":labels[i],0,0);ctx.restore()})}catch(e){console.warn("Chart unavailable",e)}}});
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("form[data-confirm]").forEach(form =>
+        form.addEventListener("submit", e => {
+            if (!window.confirm(form.dataset.confirm || "Are you sure?")) {
+                e.preventDefault();
+            }
+        })
+    );
+
+    document.querySelectorAll(".message").forEach(m => {
+        setTimeout(() => m.classList.add("fade"), 5000);
+    });
+
+    const canvas = document.getElementById("marksChart");
+
+    if (canvas) {
+        try {
+            const labels = JSON.parse(
+                document.getElementById("chartLabels").textContent
+            );
+
+            const values = JSON.parse(
+                document.getElementById("chartValues").textContent
+            );
+
+            const ctx = canvas.getContext("2d");
+            const dpr = window.devicePixelRatio || 1;
+            const width = canvas.clientWidth || 520;
+            const height = 230;
+
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+
+            ctx.scale(dpr, dpr);
+
+            const pad = {
+                l: 35,
+                r: 12,
+                t: 16,
+                b: 48
+            };
+
+            const w = width - pad.l - pad.r;
+            const h = height - pad.t - pad.b;
+
+            ctx.font = "11px Arial";
+            ctx.strokeStyle = "#e9edf4";
+            ctx.fillStyle = "#778196";
+
+            for (let i = 0; i <= 4; i++) {
+                let y = pad.t + h * i / 4;
+
+                ctx.beginPath();
+                ctx.moveTo(pad.l, y);
+                ctx.lineTo(width - pad.r, y);
+                ctx.stroke();
+
+                ctx.fillText(
+                    String(Math.round(100 - 25 * i)),
+                    3,
+                    y + 4
+                );
+            }
+
+            if (!labels.length) {
+                ctx.fillText(
+                    "Add marks to see performance insights.",
+                    pad.l + 8,
+                    height / 2
+                );
+                return;
+            }
+
+            const max = Math.max(100, ...values);
+            const slot = w / labels.length;
+
+            values.forEach((v, i) => {
+                const bh = (v / max) * h;
+                const x = pad.l + i * slot + slot * .22;
+                const bw = Math.max(5, slot * .56);
+
+                ctx.fillStyle = "#2563eb";
+                ctx.beginPath();
+                ctx.roundRect(x, pad.t + h - bh, bw, bh, 5);
+                ctx.fill();
+
+                ctx.save();
+                ctx.translate(x + bw / 2, height - pad.b + 9);
+                ctx.rotate(-.35);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#697386";
+
+                ctx.fillText(
+                    labels[i].length > 13
+                        ? labels[i].slice(0, 12) + "…"
+                        : labels[i],
+                    0,
+                    0
+                );
+
+                ctx.restore();
+            });
+
+        } catch (e) {
+            console.warn("Chart unavailable", e);
+        }
+    }
+});
